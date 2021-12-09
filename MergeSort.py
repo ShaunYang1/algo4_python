@@ -22,7 +22,7 @@ class MergeSort(Sort):
             elif (ptr_l==mid) and (ptr_r<right):
                 tmp_list[i]=arr[ptr_r]
                 ptr_r+=1
-            elif (ptr_r<mid) and (ptr_r==right):
+            elif (ptr_l<mid) and (ptr_r==right):
                 tmp_list[i]=arr[ptr_l]
                 ptr_l+=1
             else:
@@ -30,16 +30,16 @@ class MergeSort(Sort):
         
         for i in range(N):
             arr[left+i]=tmp_list[i]
-        return arr
 
 
     def mergesort(arr,left,right):
-        if(left<right):
-            mid = left + (right-left)//2
-            arr=MergeSort.mergesort(arr,left,mid)
-            arr=MergeSort.mergesort(arr,mid,right)
-            arr=MergeSort.merge(arr,left,right,mid)
-        return arr
+        if(left+1>=right):
+            return
+        mid = left + (right-left)//2
+        MergeSort.mergesort(arr,left,mid)
+        MergeSort.mergesort(arr,mid,right)
+        MergeSort.merge(arr,left,right,mid)
+
     
     def sort(arr):
         N = len(arr)
@@ -47,16 +47,20 @@ class MergeSort(Sort):
         left= 0
         
         MergeSort.mergesort(arr,left,right)
+        return arr
         
 
 
 
 
 if __name__=='__main__':
-	import sys
-	items = []
-	for line in sys.stdin:
-		items.extend(line.split())
-	print('     items: ',items)
-	print('sort items: ',MergeSort.sort(items))	 
-	assert MergeSort.is_sorted(items)
+    import sys,random,time
+    items = [random.randint(1,100000) for i in range(100000)]
+	# for line in sys.stdin:
+	# 	items.extend(line.split())
+    start=time.time()
+    print('     items: ',items)
+    print('sort items: ',MergeSort.sort(items))	 
+    end=time.time()
+    print('performance',end-start,'s')
+    assert MergeSort.is_sorted(items)
